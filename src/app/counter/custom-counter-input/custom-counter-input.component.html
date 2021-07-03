@@ -1,8 +1,14 @@
 <div class="row">
-    <div class="col-10">
-        <input #inputValue type="number" class="form-control" placeholder="Enter value...">
+    <div class="col-12">
+        <small>{{channelName$ | async}}</small>
+    </div>
+    <div class="col-8">
+        <input #inputValue type="text" class="form-control" placeholder="Enter value...">
     </div>
     <div class="col-2">
         <button class="btn btn-info" (click)="addToCounter(inputValue.value)">Add to counter</button>
+    </div>
+    <div class="col-2">
+        <button class="btn btn-info" (click)="changeChannel(inputValue.value)">Change channel name</button>
     </div>
 </div>
