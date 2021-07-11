@@ -36,8 +36,6 @@ export class AddPostComponent implements OnInit {
       description: this.form1.value.description,
     }
 
-    console.warn(post)
-
     this.store.dispatch(addPost({ post }))
   }
 
