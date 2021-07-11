@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Post } from 'src/app/models/posts.model';
 import { AppState } from 'src/app/store/app.state';
+import { editPost } from '../state/posts.action';
 import { getPostById } from '../state/posts.selector';
 
 @Component({
@@ -18,7 +19,8 @@ export class EditPostComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private store: Store<AppState>,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -44,11 +46,13 @@ export class EditPostComponent implements OnInit {
     }
 
     const post: Post = {
+      id: this.post.id,
       title: this.form1.value.title,
       description: this.form1.value.description,
     }
 
-    // this.store.dispatch(addPost({ post }))
+    this.store.dispatch(editPost({ post }))
+    this.router.navigate(['/posts'])
   }
 
 
