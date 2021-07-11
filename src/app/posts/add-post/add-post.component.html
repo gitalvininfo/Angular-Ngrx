@@ -1,0 +1,27 @@
+<div class="p-5">
+
+    <form [formGroup]="form1">
+        
+        <div class="form-group">
+          <label for="exampleInputPassword1">Title</label>
+          <input formControlName="title" type="text" class="form-control" placeholder="Title"
+          [ngClass]="{'is-invalid': submitForm && f.title.errors}">
+          <div *ngIf="submitForm && f.title.errors" class="invalid-feedback">
+            <span *ngIf="f.title.errors.required">Title is required you idiot.</span>
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Description</label>
+          <textarea formControlName="description" type="text" class="form-control" placeholder="Description"
+          [ngClass]="{'is-invalid': submitForm && f.description.errors}"></textarea>
+          <div *ngIf="submitForm && f.description.errors" class="invalid-feedback">
+            <span *ngIf="f.description.errors.required">Description is required you idiot.</span>
+          </div>
+        </div>
+        <br>
+
+        <button [disabled]="form1.invalid" type="button" class="btn btn-primary" (click)="submit()">Submit</button>
+      </form>
+
+</div>
