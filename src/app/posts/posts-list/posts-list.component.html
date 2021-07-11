@@ -3,7 +3,7 @@
     <div class="p-3">
       <button type="button" class="btn btn-primary" routerLink="add">Add Post</button>
     </div>
-    <table class="table">
+    <table class="table" *ngIf="posts | async as postsData">
         <thead>
           <tr>
             <th scope="col">Post #</th>
@@ -12,8 +12,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let post of posts | async">
-            <th scope="row">{{post.id}}</th>
+          <tr *ngFor="let post of postsData">
+            <th>{{post.id}}</th>
             <td>{{post.title}}</td>
             <td>{{post.description}}</td>
           </tr>
