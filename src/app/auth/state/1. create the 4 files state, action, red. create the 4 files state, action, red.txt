@@ -1,0 +1,4 @@
+1. create the 4 files state, action, reducer, selector
+2. go to reducer, create authReducer with initial state
+3. create actions such as user actions you idiot LOGIN_SUCCESS
+4. 
