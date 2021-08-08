@@ -8,5 +8,9 @@ export class User {
 
     }
 
+    get expireDate() {
+        return this.expirationDate; 
+    }
+
 
 }

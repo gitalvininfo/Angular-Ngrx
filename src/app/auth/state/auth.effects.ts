@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { loginStart, loginSuccess } from "./auth.actions";
-import { catchError, exhaustMap, map, tap } from "rxjs/operators"
+import { autoLogin, loginStart, loginSuccess, signupStart, signupSuccess } from "./auth.actions";
+import { catchError, exhaustMap, map, mergeMap, tap } from "rxjs/operators"
 import { AuthService } from "src/app/services/auth.service";
 import { AuthResponseData } from "src/app/models/auth-response-data.model";
 import { Store } from "@ngrx/store";
@@ -31,6 +31,9 @@ export class AuthEffects {
                     this.store.dispatch(setLoadingSpinner({ status: false }));
                     this.store.dispatch(setErrorMessage({ message: "" }));
                     const user = this.authService.formatUser(data);
+
+                    this.authService.setUserInLocalStorage(user);
+
                     return loginSuccess({ user });
                 }), catchError(err => {
                     this.store.dispatch(setLoadingSpinner({ status: false }));
@@ -41,9 +44,37 @@ export class AuthEffects {
     })
 
     loginRedirect$ = createEffect(() => {
-        return this.actions$.pipe(ofType(loginSuccess),
-        tap((action) => {
-            this.router.navigate(['/'])
+        return this.actions$.pipe(ofType(...[loginSuccess, signupSuccess]),
+            tap((action) => {
+                this.store.dispatch(setErrorMessage({ message: "" }));
+                this.router.navigate(['/'])
+            }))
+    }, { dispatch: false });
+
+
+    signUp$ = createEffect(() => {
+        return this.actions$.pipe(ofType(signupStart), exhaustMap((action) => {
+            return this.authService.signUp(action.email, action.password).pipe(
+                map((data) => {
+                    this.store.dispatch(setLoadingSpinner({ status: false }))
+                    const user = this.authService.formatUser(data);
+
+                    this.authService.setUserInLocalStorage(user);
+
+                    return signupSuccess({ user })
+                }), catchError(err => {
+                    this.store.dispatch(setLoadingSpinner({ status: false }));
+                    const errorMessage = this.authService.getErrorMessage(err.error.error.message);
+                    return of(setErrorMessage({ message: errorMessage }));
+                })
+            )
+        }))
+    })
+
+    autoLogin$ = createEffect(() => {
+        return this.actions$.pipe(ofType(autoLogin), map((action) => {
+            const user = this.authService.getUserFromLocalStorage();
+            console.log(user);
         }))
     }, { dispatch: false })
 }
