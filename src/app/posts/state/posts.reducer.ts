@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { addPost, deletePost, editPost } from "./posts.action";
+import { addPost, deletePost, editPost, loadPostSuccess } from "./posts.action";
 import { initialState } from "./posts.state";
 
 
@@ -30,6 +30,11 @@ const _postsReducer = createReducer(initialState,
         return {
             ...state,
             posts: updatedPosts
+        }
+    }), on(loadPostSuccess, (state, action) => {
+        return {
+            ...state,
+            posts: action.posts
         }
     }))
 
