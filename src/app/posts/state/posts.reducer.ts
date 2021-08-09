@@ -1,15 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
-import { addPost, deletePost, editPost, loadPostSuccess } from "./posts.action";
+import { addPost, addPostSuccess, deletePost, editPost, loadPostSuccess } from "./posts.action";
 import { initialState } from "./posts.state";
 
 
 const _postsReducer = createReducer(initialState,
-    on(addPost, (state, action) => {
-        console.warn(action)
+    on(addPostSuccess, (state, action) => {
         let post = { ...action.post };
-
-        post.id = (state.posts.length + 1).toString();
-
+        // post.id = (state.posts.length + 1).toString();
         return {
             ...state,
             // posts here is in app state appReducer you idiot

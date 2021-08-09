@@ -21,8 +21,14 @@ export class PostsService {
             posts.push({ ...data[key], id: key })
           }
 
-          return posts; 
+          return posts;
         })
       );
   }
+
+
+  addPost(post: Post): Observable<{ name: string }> {
+    return this.http.post<{ name: string }>(`https://ngrx-9b709-default-rtdb.firebaseio.com/posts.json`, post);
+  }
+
 }
